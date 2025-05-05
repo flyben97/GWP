@@ -1,0 +1,1 @@
+{"learning_rate": 0.0012314974967438652, "weight_decay": 0.000981859198529882, "predictor_hidden_feats": 74, "predictor_dropout": 0.5, "num_gcn_layers": 9, "gnn_norm_i": "both", "hidden_feats_i": 88, "residual_i": true, "batchnorm_i": false, "dropout_i": 0.2}

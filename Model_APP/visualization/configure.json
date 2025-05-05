@@ -1,0 +1,17 @@
+{
+  "lr": 0.00015676677195506063,
+  "weight_decay": 0.0007257005721594283,
+  "patience": 30,
+  "batch_size": 16,
+  "node_out_feats": 193,
+  "edge_hidden_feats": 86,
+  "num_step_message_passing": 5,
+  "num_step_set2set": 7,
+  "num_layer_set2set": 5,
+  "model": "MPNN",
+  "n_tasks": 1,
+  "atom_featurizer_type": "attentivefp",
+  "bond_featurizer_type": "attentivefp",
+  "in_node_feats": 39,
+  "in_edge_feats": 11
+}

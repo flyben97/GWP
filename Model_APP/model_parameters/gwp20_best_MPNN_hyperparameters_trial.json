@@ -1,0 +1,1 @@
+{"learning_rate": 0.0018199432597873263, "weight_decay": 0.005015553776075492, "node_out_feats": 128, "edge_hidden_feats": 32, "num_step_message_passing": 3, "num_step_set2set": 6, "num_layer_set2set": 4}

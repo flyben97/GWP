@@ -1,0 +1,1 @@
+{"learning_rate": 0.005267237589706169, "weight_decay": 1.905545692332015e-06, "max_degree": 4, "predictor_hidden_size": 90, "predictor_batchnorm": true, "predictor_dropout": 0.2}

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCAS Global Warming Potential Prediction Platform</title>
+    <link rel="icon" href="{{ url_for('static', filename='pictures/ucas.ico') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', 'Poppins', 'Inter', 'Roboto', sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            animation: fadeIn 0.5s ease-out;
+            font-size: 1.15rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            padding: 4.5rem;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Horizontal line */
+        .header hr {
+            border: none;
+            border-top: 1px solid #E6E6E6;
+            width: 100%;
+            margin: 1.25rem 0;
+        }
+
+        /* Title */
+        .title {
+            font-size: 3.25rem;
+            font-weight: 700;
+            color: #2E7D32; /* Green color for title */
+            letter-spacing: 0.075em;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Card styles */
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+            padding: 3.5rem;
+            margin-bottom: 3rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 1rem 2.25rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+            transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .btn-gray {
+            background-color: #E6E6E6;
+            color: #333333;
+        }
+
+        .btn-gray:hover {
+            background-color: #D4D4D4;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: #2E7D32; /* Green color for buttons */
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: #388E3C; /* Slightly lighter green for hover */
+            opacity: 0.9;
+        }
+
+        /* Input and textarea styles */
+        select, textarea {
+            background-color: #FFFFFF;
+            border: 1px solid #E6E6E6;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            width: 100%;
+            color: #333333;
+            font-size: 1.25rem;
+            line-height: 1.75;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+        }
+
+        select:hover, textarea:hover {
+            opacity: 0.9;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 160px;
+        }
+
+        select:focus, textarea:focus {
+            outline: none;
+            border-color: #2E7D32; /* Match focus border to green theme */
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        }
+
+        /* SweetAlert2 custom styles */
+        .swal2-popup {
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.3s ease;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.15rem;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Iframe for molecule drawing */
+        .molecule-iframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 0.75rem;
+            background-color: #FFFFFF;
+        }
+
+        /* Output and history boxes */
+        .output-box, .history-box {
+            background-color: #F5F5F5;
+            border: 1px solid #E6E6E6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 1.15rem;
+            line-height: 1.7;
+            font-weight: 400;
+        }
+
+        /* Grid layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 5rem;
+        }
+
+        .controls-card {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 3.25rem;
+            font-weight: 700;
+            color: #2E7D32; /* Green color for h2 to match title */
+        }
+
+        h3 {
+            font-size: 2.25rem;
+            font-weight: 600;
+            line-height: 1.6;
+            color: #2E7D32; /* Green color for h3 to maintain theme */
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2.5rem 0;
+            background-color: #F5F5F5;
+            color: #666666;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .footer-logo {
+            height: 52px;
+            width: auto;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1440px) {
+            .main-content {
+                max-width: 1400px;
+                padding: 3.5rem;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+            .molecule-iframe {
+                height: 600px;
+            }
+            .card {
+                padding: 3rem;
+            }
+            .title, h2 {
+                font-size: 2.75rem;
+            }
+            h3 {
+                font-size: 2rem;
+            }
+            .btn, select, textarea {
+                font-size: 1.15rem;
+            }
+            .controls-card {
+                gap: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 2.5rem;
+                max-width: 100%;
+            }
+            .card {
+                padding: 2.5rem;
+                margin-bottom: 2.5rem;
+            }
+            .btn {
+                padding: 0.85rem 1.75rem;
+                font-size: 1.05rem;
+            }
+            .molecule-iframe {
+                height: 500px;
+            }
+            .output-box, .history-box {
+                height: 180px;
+                font-size: 1.05rem;
+            }
+            .title, h2 {
+                font-size: 2.25rem;
+            }
+            h3 {
+                font-size: 1.75rem;
+            }
+            .footer-logo {
+                height: 44px;
+            }
+            .grid-container {
+                gap: 3.5rem;
+            }
+            .controls-card {
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Main content area -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <h2 class="title">Global Warming Potential Prediction</h2>
+            <hr>
+        </div>
+
+        <!-- Main grid -->
+        <div class="grid-container">
+            <!-- Left column: Model selection and controls -->
+            <div class="flex flex-col gap-2.5rem">
+                <!-- Model selection -->
+                <div class="card">
+                    <h3 class="font-medium mb-4">Model Selection</h3>
+                    <select id="model-select" class="focus:ring-blue-500 focus:border-blue-500">
+                        <option value="GWP20">GWP20</option>
+                        <option value="GWP100">GWP100</option>
+                        <option value="GWP500">GWP500</option>
+                    </select>
+                </div>
+
+                <!-- Controls and output -->
+                <div class="card controls-card">
+                    <h3 class="font-medium mb-4">Controls & Output</h3>
+                    <button id="generate-smiles" class="btn btn-primary">Generate SMILES</button>
+                    <textarea id="smiles-input" placeholder="Enter or generate SMILES..." class="focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    <button id="predict" class="btn btn-primary">Predict</button>
+                    <div id="output-box" class="output-box">Prediction results will appear here...</div>
+                </div>
+            </div>
+
+            <!-- Right column: Molecule drawing -->
+            <div class="card">
+                <h3 class="font-medium mb-4">Draw Molecule Structure</h3>
+                <iframe id="ketcher-iframe" src="{{ url_for('static', filename='ketcher-standalone/index.html') }}" class="molecule-iframe"></iframe>
+            </div>
+        </div>
+
+        <!-- Prediction history -->
+        <div class="card mt-8">
+            <h3 class="font-medium mb-4">Prediction History</h3>
+            <div id="history-box" class="history-box">History will appear here...</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <img src="{{ url_for('static', filename='pictures/UCAS.png') }}" alt="UCAS Logo" class="footer-logo">
+        <p style="margin-left: 1rem;">Shanghai Institute of Organic Chemistry, Chinese Academy of Sciences, All Rights Reserved</p>
+    </footer>
+
+    <script>
+        let history = [];
+
+        // Generate SMILES from Ketcher
+        document.getElementById('generate-smiles').addEventListener('click', function () {
+            const iframe = document.getElementById('ketcher-iframe').contentWindow;
+            iframe.ketcher.getSmiles().then(smiles => {
+                document.getElementById('smiles-input').value = smiles;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'SMILES Generated Successfully',
+                    text: smiles,
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
+            }).catch(error => {
+                console.error('Error generating SMILES:', error);
+                Swal.fire({ icon: 'error', title: 'Failed to Generate SMILES', text: 'Error: ' + error });
+            });
+        });
+
+        // Load SMILES into Ketcher
+        document.getElementById('smiles-input').addEventListener('change', function () {
+            const smiles = document.getElementById('smiles-input').value;
+            const iframe = document.getElementById('ketcher-iframe').contentWindow;
+            iframe.ketcher.setMolecule(smiles).catch(error => {
+                console.error('Error setting SMILES:', error);
+                Swal.fire({ icon: 'error', title: 'Failed to Set SMILES', text: 'Error: ' + error });
+            });
+        });
+
+        // Predict button
+        document.getElementById('predict').addEventListener('click', async function () {
+            const smiles = document.getElementById('smiles-input').value;
+            const model = document.getElementById('model-select').value;
+            if (!smiles) {
+                Swal.fire({ icon: 'warning', title: 'SMILES Required', text: 'Please enter or generate a SMILES string' });
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ smiles, model })
+                });
+                const result = await response.json();
+
+                document.getElementById('output-box').innerText = `Model: ${model}\nPrediction:\n${result.prediction}`;
+
+                const historyEntry = `[${new Date().toLocaleTimeString()}] SMILES: ${smiles}\nModel: ${model}\nPrediction: ${result.prediction}\n---`;
+                history.unshift(historyEntry);
+                document.getElementById('history-box').innerText = history.join('\n');
+
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Prediction Complete',
+                    html: `Model: ${model}<br>Prediction:<br>${result.prediction}`.replace(/\n/g, '<br>'),
+                    confirmButtonText: 'OK'
+                });
+            } catch (error) {
+                console.error('Error predicting:', error);
+                Swal.fire({ icon: 'error', title: 'Prediction Failed', text: 'Error: ' + error.message });
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9387c7747d55bcf6',t:'MTc0NjAyMzg2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
