@@ -80,13 +80,7 @@ python app.py
 
 ---
 
-## 📸 Screenshots (Optional)
-
-> *(Add screenshots or GIFs of the interface here to showcase functionality.)*
-
----
-
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
 
