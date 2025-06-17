@@ -86,7 +86,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Developed by the **Shanghai Institute of Organic Chemistry**, Chinese Academy of Sciences.
 Built with:
