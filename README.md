@@ -4,7 +4,7 @@ A Flask-based web platform that predicts the **Global Warming Potential (GWP)** 
 
 ---
 
-## 🚀 Features
+## 1. Features
 
 * **🔬 GWP Prediction Models**
   Predict GWP values using three pre-trained GNN architectures:
@@ -27,7 +27,7 @@ A Flask-based web platform that predicts the **Global Warming Potential (GWP)** 
 
 ---
 
-## 📦 Prerequisites
+## 2. Prerequisites
 
 Make sure you have the following installed:
 
@@ -42,7 +42,7 @@ Make sure you have the following installed:
 
 ---
 
-## 🛠️ Installation
+## 3. Installation
 
 1. **Clone the Repository**
 
@@ -59,7 +59,7 @@ pip install torch dgl dgllife flask pandas
 
 ---
 
-## ▶️ Usage
+## 4. Usage
 
 1. **Start the Flask App**
 
